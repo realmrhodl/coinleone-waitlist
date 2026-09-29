@@ -32,7 +32,10 @@
     body {
       min-height: 100dvh;
       font-family: "Roboto", system-ui, sans-serif;
-      background: var(--navy);
+      background:
+        radial-gradient(ellipse 120% 60% at 50% -10%, #1a2840 0%, transparent 55%),
+        radial-gradient(ellipse 80% 40% at 80% 20%, rgba(232,197,71,0.04) 0%, transparent 50%),
+        var(--navy);
       color: var(--text);
       line-height: 1.45;
       -webkit-font-smoothing: antialiased;
@@ -49,6 +52,8 @@
       background: linear-gradient(180deg, #141e2c, #0a1018);
       border-bottom: 2px solid var(--gold-dark);
       box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
     }
 
     .hud-logo {
@@ -99,6 +104,13 @@
       box-shadow: 0 0 6px rgba(61, 186, 108, 0.7);
     }
     .hud-btc.stale .dot { background: var(--muted); box-shadow: none; }
+    .hud-btc .chg {
+      margin-left: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .hud-btc .chg.up { color: var(--green); }
+    .hud-btc .chg.down { color: #e03a3f; }
 
     /* Hero */
     .hero {
@@ -113,12 +125,47 @@
       text-align: center;
     }
 
+    /* Night stars layer */
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1px 1px at 18% 28%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1.5px 1.5px at 32% 8%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 48% 18%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 62% 6%, rgba(255,255,255,0.45), transparent),
+        radial-gradient(1.5px 1.5px at 78% 22%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 88% 14%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 12% 42%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 55% 38%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 92% 40%, rgba(255,255,255,0.28), transparent);
+      opacity: 0.7;
+    }
+
+    .moon {
+      position: absolute;
+      top: 18px;
+      right: 12%;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #f5e6b8, #c9b87a 60%, #8a7a4a);
+      box-shadow: 0 0 24px rgba(232,197,71,0.25), inset -4px -2px 8px rgba(0,0,0,0.25);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.85;
+    }
+
     .skyline {
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      height: 90px;
+      height: 110px;
       pointer-events: none;
-      opacity: 0.55;
+      opacity: 0.7;
+      z-index: 0;
     }
 
     .skyline svg { width: 100%; height: 100%; display: block; }
@@ -165,6 +212,8 @@
       border-radius: 4px;
       font-size: 0.85rem;
       font-variant-numeric: tabular-nums;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .btc-teaser .label {
       font-size: 0.65rem;
@@ -189,6 +238,29 @@
       color: var(--green);
     }
     .btc-teaser.stale .live { color: var(--muted); }
+    .btc-teaser .chg {
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .btc-teaser .chg.up { color: var(--green); }
+    .btc-teaser .chg.down { color: #e03a3f; }
+    .btc-teaser .chg.flat { color: var(--muted); }
+    .btc-spark {
+      display: block;
+      width: 72px;
+      height: 22px;
+      margin-left: 2px;
+    }
+    .btc-spark path {
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .btc-spark.up path { stroke: var(--green); }
+    .btc-spark.down path { stroke: #e03a3f; }
+    .btc-spark.flat path { stroke: var(--muted); }
 
     /* Job of the day */
     .job-day {
@@ -252,7 +324,7 @@
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 22px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
     }
 
@@ -270,6 +342,55 @@
     }
     .hint span { margin-right: 3px; }
     .hint .lock { opacity: 0.7; font-size: 0.6rem; margin-left: 3px; }
+
+    /* Faucet locked tease with countdown */
+    .faucet-tease {
+      margin: 0 0 18px;
+      padding: 10px 12px;
+      background: #0a1018;
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .faucet-tease .ft-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: left;
+    }
+    .faucet-tease .ft-icon { font-size: 1rem; opacity: 0.85; }
+    .faucet-tease .ft-title {
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gold-2);
+    }
+    .faucet-tease .ft-sub {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .faucet-tease .ft-timer {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .faucet-tease .ft-lock {
+      font-size: 0.65rem;
+      opacity: 0.7;
+      margin-left: 4px;
+    }
 
     form { text-align: left; }
 
@@ -320,6 +441,15 @@
     .cta:active { transform: translateY(2px); box-shadow: 0 1px 0 #6e5614; }
     .cta:disabled { opacity: 0.6; cursor: wait; }
 
+    .joined-today {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      min-height: 1.1em;
+    }
+    .joined-today b { color: var(--gold-2); font-weight: 700; }
+
     .msg { margin-top: 10px; font-size: 0.85rem; min-height: 1.2em; text-align: center; }
     .msg.ok { color: var(--green); }
     .msg.err { color: #e03a3f; }
@@ -331,6 +461,21 @@
       text-align: center;
     }
     .count b { color: var(--gold-2); }
+    .count .live-dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 5px;
+      vertical-align: middle;
+      box-shadow: 0 0 6px rgba(61, 186, 108, 0.55);
+      animation: blinkDot 2.4s ease-in-out infinite;
+    }
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
 
     /* Success panel after signup */
     .success-panel {
@@ -443,45 +588,55 @@
     <div class="hud-logo"><span class="mark">♠</span> CoinLeone</div>
     <!-- Guests: no faux cash/energy. Live BTC only. -->
     <div class="hud-btc stale" id="hudBtc" title="Bitcoin (USD)" aria-live="polite">
-      <span class="dot" aria-hidden="true"></span>BTC <b id="hudBtcPrice">—</b>
+      <span class="dot" aria-hidden="true"></span>BTC <b id="hudBtcPrice">—</b><span class="chg" id="hudBtcChg"></span>
     </div>
   </header>
 
   <main class="hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="moon" aria-hidden="true"></div>
     <div class="skyline" aria-hidden="true">
-      <svg viewBox="0 0 960 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 960 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="bld" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#1a2840"/>
             <stop offset="100%" stop-color="#0d1520"/>
           </linearGradient>
+          <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8c547" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#c4282d" stop-opacity="0.25"/>
+          </linearGradient>
         </defs>
-        <rect x="0" y="50" width="40" height="40" fill="url(#bld)"/>
-        <rect x="45" y="30" width="55" height="60" fill="url(#bld)"/>
-        <rect x="105" y="45" width="35" height="45" fill="url(#bld)"/>
-        <rect x="145" y="20" width="70" height="70" fill="url(#bld)"/>
-        <polygon points="145,20 180,5 215,20" fill="#1a2840"/>
-        <rect x="220" y="40" width="50" height="50" fill="url(#bld)"/>
-        <rect x="275" y="28" width="40" height="62" fill="url(#bld)"/>
-        <rect x="320" y="15" width="80" height="75" fill="url(#bld)"/>
-        <rect x="405" y="35" width="45" height="55" fill="url(#bld)"/>
-        <rect x="455" y="25" width="60" height="65" fill="url(#bld)"/>
-        <rect x="520" y="42" width="38" height="48" fill="url(#bld)"/>
-        <rect x="563" y="18" width="75" height="72" fill="url(#bld)"/>
-        <polygon points="563,18 600,0 638,18" fill="#1a2840"/>
-        <rect x="643" y="38" width="50" height="52" fill="url(#bld)"/>
-        <rect x="698" y="22" width="55" height="68" fill="url(#bld)"/>
-        <rect x="758" y="45" width="42" height="45" fill="url(#bld)"/>
-        <rect x="805" y="28" width="65" height="62" fill="url(#bld)"/>
-        <rect x="875" y="40" width="50" height="50" fill="url(#bld)"/>
-        <rect x="930" y="50" width="30" height="40" fill="url(#bld)"/>
-        <g fill="#e8c547" opacity="0.3">
-          <rect x="55" y="40" width="4" height="4"/><rect x="65" y="52" width="4" height="4"/>
-          <rect x="160" y="35" width="4" height="4"/><rect x="340" y="30" width="4" height="4"/>
-          <rect x="470" y="40" width="4" height="4"/><rect x="600" y="50" width="4" height="4"/>
-          <rect x="710" y="40" width="4" height="4"/><rect x="840" y="45" width="4" height="4"/>
+        <rect x="0" y="0" width="960" height="110" fill="url(#glow)"/>
+        <rect x="0" y="70" width="40" height="40" fill="url(#bld)"/>
+        <rect x="45" y="50" width="55" height="60" fill="url(#bld)"/>
+        <rect x="105" y="65" width="35" height="45" fill="url(#bld)"/>
+        <rect x="145" y="40" width="70" height="70" fill="url(#bld)"/>
+        <polygon points="145,40 180,25 215,40" fill="#1a2840"/>
+        <rect x="220" y="60" width="50" height="50" fill="url(#bld)"/>
+        <rect x="275" y="48" width="40" height="62" fill="url(#bld)"/>
+        <rect x="320" y="35" width="80" height="75" fill="url(#bld)"/>
+        <rect x="405" y="55" width="45" height="55" fill="url(#bld)"/>
+        <rect x="455" y="45" width="60" height="65" fill="url(#bld)"/>
+        <rect x="520" y="62" width="38" height="48" fill="url(#bld)"/>
+        <rect x="563" y="38" width="75" height="72" fill="url(#bld)"/>
+        <polygon points="563,38 600,20 638,38" fill="#1a2840"/>
+        <rect x="643" y="58" width="50" height="52" fill="url(#bld)"/>
+        <rect x="698" y="42" width="55" height="68" fill="url(#bld)"/>
+        <rect x="758" y="65" width="42" height="45" fill="url(#bld)"/>
+        <rect x="805" y="48" width="65" height="62" fill="url(#bld)"/>
+        <rect x="875" y="60" width="50" height="50" fill="url(#bld)"/>
+        <rect x="930" y="70" width="30" height="40" fill="url(#bld)"/>
+        <g fill="#e8c547" opacity="0.45">
+          <rect x="55" y="60" width="4" height="4"/><rect x="65" y="72" width="4" height="4"/>
+          <rect x="160" y="55" width="4" height="4"/><rect x="175" y="68" width="3" height="3"/>
+          <rect x="340" y="50" width="4" height="4"/><rect x="360" y="62" width="3" height="3"/>
+          <rect x="470" y="60" width="4" height="4"/><rect x="490" y="72" width="3" height="3"/>
+          <rect x="600" y="70" width="4" height="4"/><rect x="615" y="55" width="3" height="3"/>
+          <rect x="710" y="60" width="4" height="4"/><rect x="730" y="75" width="3" height="3"/>
+          <rect x="840" y="65" width="4" height="4"/><rect x="855" y="78" width="3" height="3"/>
         </g>
-        <rect x="0" y="86" width="960" height="4" fill="#c4282d" opacity="0.55"/>
+        <rect x="0" y="106" width="960" height="4" fill="#c4282d" opacity="0.55"/>
       </svg>
     </div>
 
@@ -492,6 +647,8 @@
       <div class="btc-teaser stale" id="btcTeaser" aria-live="polite">
         <span class="label">BTC</span>
         <span class="price" id="btcPrice">Loading…</span>
+        <span class="chg flat" id="btcChg"></span>
+        <svg class="btc-spark flat" id="btcSpark" viewBox="0 0 72 22" aria-hidden="true"><path d="" /></svg>
         <span class="live" id="btcLive">·</span>
       </div>
 
@@ -503,9 +660,20 @@
       </div>
 
       <div class="hints" aria-label="Coming soon">
-        <div class="hint" title="Coming soon"><span>💧</span> Faucet<span class="lock">🔒</span></div>
         <div class="hint" title="Coming soon"><span>🎰</span> Casino<span class="lock">🔒</span></div>
         <div class="hint" title="Coming soon"><span>🎟️</span> Lottery<span class="lock">🔒</span></div>
+        <div class="hint" title="Coming soon"><span>🃏</span> Scratch<span class="lock">🔒</span></div>
+      </div>
+
+      <div class="faucet-tease" id="faucetTease" title="Daily drip unlocks at launch" aria-label="Daily faucet countdown">
+        <div class="ft-left">
+          <span class="ft-icon" aria-hidden="true">💧</span>
+          <div>
+            <div class="ft-title">Daily faucet <span class="ft-lock">🔒</span></div>
+            <div class="ft-sub">Next drip · locked tease</div>
+          </div>
+        </div>
+        <div class="ft-timer" id="faucetTimer">--:--:--</div>
       </div>
 
       <form id="waitlistForm" novalidate>
@@ -518,6 +686,7 @@
           <input id="ref" name="ref" type="text" placeholder="REFERRAL" autocomplete="off" maxlength="24" />
         </div>
         <button type="submit" class="cta" id="submitBtn">Join the Family</button>
+        <p class="joined-today" id="joinedToday" aria-live="polite"></p>
         <div class="msg" id="formMsg" role="status"></div>
       </form>
 
@@ -537,7 +706,7 @@
         <p class="social-line">A quiet word to a friend goes further than a shout.</p>
       </div>
 
-      <p class="count">Family on the list · <b id="waitCount">128</b></p>
+      <p class="count"><span class="live-dot" aria-hidden="true"></span>Family on the list · <b id="waitCount">128</b></p>
     </div>
   </main>
 
@@ -550,7 +719,11 @@
     (function () {
       var STORAGE_KEY = "coinleone_waitlist_v1";
       var COUNT_KEY = "coinleone_waitlist_count";
+      var BTC_SAMPLES_KEY = "coinleone_btc_samples_v1";
+      var SOFT_TICK_KEY = "coinleone_soft_tick_v1";
+      var SEED = 128;
       var BTC_REFRESH_MS = 60000;
+      var SOFT_TICK_MS = 28000;
 
       var JOBS = [
         { name: "Street Corner Shake", tease: "Lean on a local shop. Quick, quiet, no mess." },
@@ -638,17 +811,110 @@
         }
       }
 
-      function saveEntries(arr) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-        var n = 128 + arr.length;
-        localStorage.setItem(COUNT_KEY, String(n));
-        document.getElementById("waitCount").textContent = n.toLocaleString();
+      function localJoins() {
+        return loadEntries().length;
       }
 
-      var existing = loadEntries();
-      var shown = parseInt(localStorage.getItem(COUNT_KEY) || "128", 10);
-      if (existing.length) shown = Math.max(shown, 128 + existing.length);
-      document.getElementById("waitCount").textContent = shown.toLocaleString();
+      function localJoinsToday() {
+        var today = dateKey();
+        return loadEntries().filter(function (x) {
+          if (!x || !x.at) return false;
+          try {
+            var d = new Date(x.at);
+            var y = d.getFullYear();
+            var m = String(d.getMonth() + 1).padStart(2, "0");
+            var day = String(d.getDate()).padStart(2, "0");
+            return y + "-" + m + "-" + day === today;
+          } catch (e) {
+            return false;
+          }
+        }).length;
+      }
+
+      /* Seeded “joined today” ambient (3–9) stable per day + local joins today */
+      function seededTodayBase() {
+        return 3 + (hashStr(dateKey() + "|joined-today") % 7);
+      }
+
+      function updateJoinedToday() {
+        var n = seededTodayBase() + localJoinsToday();
+        var el = document.getElementById("joinedToday");
+        if (!el) return;
+        el.innerHTML = "<b>" + n + "</b> joined today";
+      }
+
+      /* Soft tick: ephemeral ambient bump on top of seed + local joins */
+      function loadSoftTick() {
+        try {
+          var raw = JSON.parse(localStorage.getItem(SOFT_TICK_KEY) || "null");
+          if (!raw || raw.day !== dateKey()) return { day: dateKey(), n: 0 };
+          return raw;
+        } catch (e) {
+          return { day: dateKey(), n: 0 };
+        }
+      }
+
+      function saveSoftTick(obj) {
+        try { localStorage.setItem(SOFT_TICK_KEY, JSON.stringify(obj)); } catch (e) {}
+      }
+
+      var softTick = loadSoftTick();
+
+      function baseCount() {
+        return SEED + localJoins();
+      }
+
+      function renderCount() {
+        var n = baseCount() + softTick.n;
+        document.getElementById("waitCount").textContent = n.toLocaleString();
+        try { localStorage.setItem(COUNT_KEY, String(n)); } catch (e) {}
+      }
+
+      function saveEntries(arr) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+        renderCount();
+        updateJoinedToday();
+      }
+
+      renderCount();
+      updateJoinedToday();
+
+      /* Soft ambient tick — occasionally +1 (capped for the day) */
+      setInterval(function () {
+        if (softTick.day !== dateKey()) softTick = { day: dateKey(), n: 0 };
+        if (softTick.n >= 18) return;
+        if (Math.random() < 0.55) {
+          softTick.n += 1;
+          saveSoftTick(softTick);
+          renderCount();
+        }
+      }, SOFT_TICK_MS);
+
+      /* —— Daily faucet countdown (midnight local) —— */
+      var faucetTimerEl = document.getElementById("faucetTimer");
+
+      function msUntilMidnight() {
+        var now = new Date();
+        var next = new Date(now);
+        next.setHours(24, 0, 0, 0);
+        return Math.max(0, next - now);
+      }
+
+      function formatHMS(ms) {
+        var s = Math.floor(ms / 1000);
+        var h = Math.floor(s / 3600);
+        var m = Math.floor((s % 3600) / 60);
+        var sec = s % 60;
+        return String(h).padStart(2, "0") + ":" +
+          String(m).padStart(2, "0") + ":" +
+          String(sec).padStart(2, "0");
+      }
+
+      function tickFaucet() {
+        faucetTimerEl.textContent = formatHMS(msUntilMidnight());
+      }
+      tickFaucet();
+      setInterval(tickFaucet, 1000);
 
       var form = document.getElementById("waitlistForm");
       var msg = document.getElementById("formMsg");
@@ -671,19 +937,9 @@
         var linkEl = document.getElementById("shareLink");
         linkEl.href = url;
         linkEl.textContent = url;
+        updateJoinedToday();
+        renderCount();
       }
-
-      function findEntryByEmail(email) {
-        return loadEntries().find(function (x) { return x.email === email; });
-      }
-
-      /* Restore success panel if this browser already joined */
-      (function restoreIfJoined() {
-        var last = existing.length ? existing[existing.length - 1] : null;
-        if (last && last.code) {
-          /* Only auto-show if they have a stored code from a prior session join on this device */
-        }
-      })();
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -763,12 +1019,15 @@
         copyText(shareUrlFor(code), this);
       });
 
-      /* —— Live BTC (USD) —— */
+      /* —— Live BTC (USD) + 24h change + sparkline —— */
       var btcPriceEl = document.getElementById("btcPrice");
       var btcLiveEl = document.getElementById("btcLive");
       var btcTeaser = document.getElementById("btcTeaser");
+      var btcChgEl = document.getElementById("btcChg");
+      var btcSparkEl = document.getElementById("btcSpark");
       var hudBtc = document.getElementById("hudBtc");
       var hudBtcPrice = document.getElementById("hudBtcPrice");
+      var hudBtcChg = document.getElementById("hudBtcChg");
       var lastBtc = null;
 
       function formatUsd(n) {
@@ -783,6 +1042,85 @@
         }
       }
 
+      function loadSamples() {
+        try {
+          var arr = JSON.parse(localStorage.getItem(BTC_SAMPLES_KEY) || "[]");
+          if (!Array.isArray(arr)) return [];
+          var cutoff = Date.now() - 26 * 60 * 60 * 1000;
+          return arr.filter(function (x) {
+            return x && typeof x.t === "number" && typeof x.p === "number" && x.t >= cutoff;
+          });
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function saveSample(price) {
+        var arr = loadSamples();
+        var now = Date.now();
+        /* keep ~1 sample / 5 min */
+        var last = arr.length ? arr[arr.length - 1] : null;
+        if (last && now - last.t < 4 * 60 * 1000) {
+          last.p = price;
+          last.t = now;
+        } else {
+          arr.push({ t: now, p: price });
+        }
+        if (arr.length > 320) arr = arr.slice(arr.length - 320);
+        try { localStorage.setItem(BTC_SAMPLES_KEY, JSON.stringify(arr)); } catch (e) {}
+        return arr;
+      }
+
+      function setChg(pct) {
+        var txt = "";
+        var cls = "flat";
+        if (pct != null && isFinite(pct)) {
+          var sign = pct > 0 ? "+" : "";
+          txt = sign + pct.toFixed(2) + "%";
+          cls = pct > 0.02 ? "up" : pct < -0.02 ? "down" : "flat";
+        }
+        btcChgEl.textContent = txt;
+        btcChgEl.className = "chg " + cls;
+        hudBtcChg.textContent = txt ? " " + txt : "";
+        hudBtcChg.className = "chg " + cls;
+        btcSparkEl.className = "btc-spark " + cls;
+      }
+
+      function drawSpark(prices) {
+        var path = btcSparkEl.querySelector("path");
+        if (!path || !prices || prices.length < 2) {
+          if (path) path.setAttribute("d", "");
+          return;
+        }
+        var min = Math.min.apply(null, prices);
+        var max = Math.max.apply(null, prices);
+        var range = max - min || 1;
+        var w = 72, h = 22, pad = 1;
+        var pts = [];
+        for (var i = 0; i < prices.length; i++) {
+          var x = pad + (i / (prices.length - 1)) * (w - pad * 2);
+          var y = pad + (1 - (prices[i] - min) / range) * (h - pad * 2);
+          pts.push(x.toFixed(1) + "," + y.toFixed(1));
+        }
+        path.setAttribute("d", "M" + pts.join(" L"));
+      }
+
+      function applySparkFromSamples(samples) {
+        if (!samples || samples.length < 2) return;
+        var prices = samples.map(function (x) { return x.p; });
+        /* downsample to ~36 points */
+        if (prices.length > 36) {
+          var step = prices.length / 36;
+          var out = [];
+          for (var i = 0; i < 36; i++) out.push(prices[Math.floor(i * step)]);
+          prices = out;
+        }
+        drawSpark(prices);
+        var first = samples[0].p;
+        var last = samples[samples.length - 1].p;
+        if (first > 0) setChg(((last - first) / first) * 100);
+      }
+
       function applyPrice(n) {
         lastBtc = n;
         var formatted = formatUsd(n);
@@ -791,6 +1129,11 @@
         btcLiveEl.textContent = "Live";
         btcTeaser.classList.remove("stale");
         hudBtc.classList.remove("stale");
+        var samples = saveSample(n);
+        /* If we don't have CoinGecko change yet, derive from samples */
+        if (!btcChgEl.dataset.fromApi) {
+          applySparkFromSamples(samples);
+        }
       }
 
       function markStale() {
@@ -833,7 +1176,7 @@
 
       function fetchCoinGecko() {
         return fetch(
-          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true",
           { cache: "no-store" }
         ).then(function (r) {
           if (!r.ok) throw new Error("coingecko " + r.status);
@@ -842,6 +1185,11 @@
           var n = d && d.bitcoin && d.bitcoin.usd;
           n = parseFloat(n);
           if (!isFinite(n) || n <= 0) throw new Error("bad price");
+          var chg = d.bitcoin.usd_24h_change;
+          if (chg != null && isFinite(chg)) {
+            setChg(chg);
+            btcChgEl.dataset.fromApi = "1";
+          }
           return n;
         });
       }
@@ -860,6 +1208,46 @@
         });
       }
 
+      /* CoinGecko market chart for sparkline (best effort, non-blocking) */
+      function fetchSparkline() {
+        return fetch(
+          "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1",
+          { cache: "no-store" }
+        ).then(function (r) {
+          if (!r.ok) throw new Error("chart " + r.status);
+          return r.json();
+        }).then(function (d) {
+          var rows = d && d.prices;
+          if (!rows || !rows.length) throw new Error("no prices");
+          var prices = rows.map(function (x) { return x[1]; });
+          if (prices.length > 48) {
+            var step = prices.length / 48;
+            var out = [];
+            for (var i = 0; i < 48; i++) out.push(prices[Math.floor(i * step)]);
+            prices = out;
+          }
+          drawSpark(prices);
+          if (prices.length >= 2) {
+            var first = prices[0], last = prices[prices.length - 1];
+            if (first > 0 && !btcChgEl.dataset.fromApi) {
+              setChg(((last - first) / first) * 100);
+            }
+          }
+          /* also seed local samples from chart endpoints */
+          try {
+            var samples = rows.slice(-60).map(function (x) {
+              return { t: x[0], p: x[1] };
+            });
+            var existing = loadSamples();
+            if (existing.length < 5) {
+              localStorage.setItem(BTC_SAMPLES_KEY, JSON.stringify(samples));
+            }
+          } catch (e) {}
+        }).catch(function () {
+          applySparkFromSamples(loadSamples());
+        });
+      }
+
       function refreshBtc() {
         fetchCoinbase()
           .catch(function () { return fetchBinance(); })
@@ -867,10 +1255,30 @@
           .catch(function () { return fetchKraken(); })
           .then(applyPrice)
           .catch(markStale);
+
+        /* Prefer CoinGecko change when available (lightweight) */
+        fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true",
+          { cache: "no-store" }
+        ).then(function (r) {
+          if (!r.ok) throw new Error("cg");
+          return r.json();
+        }).then(function (d) {
+          var chg = d && d.bitcoin && d.bitcoin.usd_24h_change;
+          if (chg != null && isFinite(chg)) {
+            setChg(chg);
+            btcChgEl.dataset.fromApi = "1";
+          }
+        }).catch(function () {});
       }
 
+      /* Restore spark from local samples immediately */
+      applySparkFromSamples(loadSamples());
+
       refreshBtc();
+      fetchSparkline();
       setInterval(refreshBtc, BTC_REFRESH_MS);
+      setInterval(fetchSparkline, 5 * 60 * 1000);
     })();
   </script>
 </body>
