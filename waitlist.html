@@ -158,7 +158,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin: 0 auto 18px;
+      margin: 0 auto 16px;
       padding: 8px 14px;
       background: #0a1018;
       border: 1px solid var(--border);
@@ -189,6 +189,64 @@
       color: var(--green);
     }
     .btc-teaser.stale .live { color: var(--muted); }
+
+    /* Job of the day */
+    .job-day {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, #121c2a, #0a1018);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold-dark);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .job-day .job-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold-dark);
+      margin-bottom: 4px;
+    }
+    .job-day .job-name {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .job-day .job-tease {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .job-day .job-cta {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gold-2);
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .job-day .job-cta:hover { color: var(--gold); text-decoration: underline; }
+
+    @keyframes softPulse {
+      0%, 100% { box-shadow: 0 0 0 0 transparent; }
+      40% { box-shadow: 0 0 0 3px var(--gold-glow); }
+    }
+    .job-day.pulse-once {
+      animation: softPulse 1.4s ease-out 1;
+    }
+    .btc-teaser.pulse-once {
+      animation: softPulse 1.4s ease-out 1;
+    }
 
     .hints {
       display: flex;
@@ -274,6 +332,99 @@
     }
     .count b { color: var(--gold-2); }
 
+    /* Success panel after signup */
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 4px 0 2px;
+    }
+    .success-panel.show { display: block; }
+    .success-panel .success-title {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .success-panel .success-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .success-panel .code-block {
+      background: #0a1018;
+      border: 1px solid var(--gold-dark);
+      border-radius: 4px;
+      padding: 14px 12px;
+      margin-bottom: 12px;
+    }
+    .success-panel .code-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .success-panel .crew-code {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 1.45rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-shadow: 0 0 12px var(--gold-glow);
+      margin-bottom: 10px;
+      user-select: all;
+    }
+    .success-panel .btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .success-panel .btn-sm {
+      font-family: "Oswald", sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #121c2a;
+      color: var(--gold-2);
+    }
+    .success-panel .btn-sm:hover { border-color: var(--gold-dark); filter: brightness(1.08); }
+    .success-panel .btn-sm.primary {
+      background: linear-gradient(180deg, var(--gold-2), var(--gold-dark));
+      color: #1a1408;
+      border-color: #9a7a20;
+    }
+    .success-panel .share-text {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .success-panel .share-link {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--blue);
+      word-break: break-all;
+      text-decoration: none;
+    }
+    .success-panel .share-link:hover { text-decoration: underline; }
+    .success-panel .social-line {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
     footer {
       position: relative;
       z-index: 1;
@@ -344,6 +495,13 @@
         <span class="live" id="btcLive">·</span>
       </div>
 
+      <div class="job-day" id="jobDay" aria-label="Job of the day">
+        <div class="job-label">Job of the day</div>
+        <div class="job-name" id="jobName">—</div>
+        <div class="job-tease" id="jobTease"></div>
+        <button type="button" class="job-cta" id="jobJoinBtn">Join to run it →</button>
+      </div>
+
       <div class="hints" aria-label="Coming soon">
         <div class="hint" title="Coming soon"><span>💧</span> Faucet<span class="lock">🔒</span></div>
         <div class="hint" title="Coming soon"><span>🎰</span> Casino<span class="lock">🔒</span></div>
@@ -363,6 +521,22 @@
         <div class="msg" id="formMsg" role="status"></div>
       </form>
 
+      <div class="success-panel" id="successPanel" aria-live="polite">
+        <div class="success-title">You’re in</div>
+        <p class="success-sub">Your personal crew code is ready. Share it — grow the family.</p>
+        <div class="code-block">
+          <div class="code-label">Your crew code</div>
+          <div class="crew-code" id="crewCodeDisplay">LEONE-XXXX</div>
+          <div class="btn-row">
+            <button type="button" class="btn-sm primary" id="copyCodeBtn">Copy code</button>
+            <button type="button" class="btn-sm" id="copyLinkBtn">Copy link</button>
+          </div>
+        </div>
+        <p class="share-text" id="shareText"></p>
+        <a class="share-link" id="shareLink" href="#" target="_blank" rel="noopener"></a>
+        <p class="social-line">A quiet word to a friend goes further than a shout.</p>
+      </div>
+
       <p class="count">Family on the list · <b id="waitCount">128</b></p>
     </div>
   </main>
@@ -378,10 +552,79 @@
       var COUNT_KEY = "coinleone_waitlist_count";
       var BTC_REFRESH_MS = 60000;
 
+      var JOBS = [
+        { name: "Street Corner Shake", tease: "Lean on a local shop. Quick, quiet, no mess." },
+        { name: "Pickup Truck Boost", tease: "Hot-wire a beat-up hauler before dawn." },
+        { name: "Warehouse Peek", tease: "Scout the docks. See what’s moving tonight." },
+        { name: "ATM Skim", tease: "Slap a reader on a quiet machine. Walk away." },
+        { name: "Casino Chip Swap", tease: "Swap a marked stack under the pit boss’s nose." },
+        { name: "Harbor Drop", tease: "Meet the boat. Pass the crate. Don’t ask." },
+        { name: "Safehouse Sweep", tease: "Clear out last night’s leftovers before heat arrives." },
+        { name: "Courier Run", tease: "Cross town with a locked briefcase. No stops." },
+        { name: "Poker Table Mark", tease: "Spot the whale. Signal the crew. Cash later." },
+        { name: "Back-Alley Deal", tease: "Handshake in the rain. Goods change hands." },
+        { name: "Garage Chop", tease: "Strip a sedan for parts before sunrise." },
+        { name: "Nightclub Tab", tease: "Collect what’s owed. Smile. Leave a tip." }
+      ];
+
       function qs(name) {
         var m = new URLSearchParams(window.location.search).get(name);
         return m ? m.trim() : "";
       }
+
+      function dateKey() {
+        var d = new Date();
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, "0");
+        var day = String(d.getDate()).padStart(2, "0");
+        return y + "-" + m + "-" + day;
+      }
+
+      function hashStr(s) {
+        var h = 2166136261;
+        for (var i = 0; i < s.length; i++) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+
+      function jobOfTheDay() {
+        var idx = hashStr(dateKey() + "|coinleone-job") % JOBS.length;
+        return JOBS[idx];
+      }
+
+      function crewCodeFromEmail(email) {
+        var h = hashStr(email.toLowerCase().trim() + "|leone-crew");
+        var alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        var code = "";
+        var n = h;
+        for (var i = 0; i < 4; i++) {
+          code += alphabet[n % alphabet.length];
+          n = Math.floor(n / alphabet.length);
+        }
+        return "LEONE-" + code;
+      }
+
+      /* —— Job of the day —— */
+      var job = jobOfTheDay();
+      document.getElementById("jobName").textContent = job.name;
+      document.getElementById("jobTease").textContent = job.tease;
+
+      var jobDayEl = document.getElementById("jobDay");
+      var btcTeaserEl = document.getElementById("btcTeaser");
+      requestAnimationFrame(function () {
+        jobDayEl.classList.add("pulse-once");
+        btcTeaserEl.classList.add("pulse-once");
+      });
+
+      document.getElementById("jobJoinBtn").addEventListener("click", function () {
+        var emailEl = document.getElementById("email");
+        if (emailEl && form.style.display !== "none") {
+          emailEl.focus();
+          emailEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      });
 
       var refInput = document.getElementById("ref");
       var fromUrl = qs("ref") || qs("code") || qs("r");
@@ -410,6 +653,37 @@
       var form = document.getElementById("waitlistForm");
       var msg = document.getElementById("formMsg");
       var btn = document.getElementById("submitBtn");
+      var successPanel = document.getElementById("successPanel");
+
+      function shareUrlFor(code) {
+        var origin = window.location.origin;
+        var path = window.location.pathname || "/";
+        return origin + path + "?ref=" + encodeURIComponent(code);
+      }
+
+      function showSuccess(code) {
+        form.style.display = "none";
+        successPanel.classList.add("show");
+        document.getElementById("crewCodeDisplay").textContent = code;
+        var url = shareUrlFor(code);
+        document.getElementById("shareText").textContent =
+          "Join my crew on CoinLeone — use code " + code;
+        var linkEl = document.getElementById("shareLink");
+        linkEl.href = url;
+        linkEl.textContent = url;
+      }
+
+      function findEntryByEmail(email) {
+        return loadEntries().find(function (x) { return x.email === email; });
+      }
+
+      /* Restore success panel if this browser already joined */
+      (function restoreIfJoined() {
+        var last = existing.length ? existing[existing.length - 1] : null;
+        if (last && last.code) {
+          /* Only auto-show if they have a stored code from a prior session join on this device */
+        }
+      })();
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -426,28 +700,67 @@
         }
 
         var entries = loadEntries();
-        if (entries.some(function (x) { return x.email === email; })) {
-          msg.className = "msg ok";
-          msg.textContent = "You’re already in. We’ll ping you when it’s time.";
+        var already = entries.find(function (x) { return x.email === email; });
+        if (already) {
+          var code = already.code || crewCodeFromEmail(email);
+          if (!already.code) {
+            already.code = code;
+            saveEntries(entries);
+          }
+          showSuccess(code);
           return;
         }
 
         btn.disabled = true;
+        var myCode = crewCodeFromEmail(email);
         entries.push({
           email: email,
           ref: ref || null,
+          code: myCode,
           at: new Date().toISOString()
         });
         saveEntries(entries);
 
-        // Hook for Laravel later: POST /api/waitlist { email, ref }
-        msg.className = "msg ok";
-        msg.textContent = ref
-          ? "You’re in. Crew code " + ref + " locked to your spot."
-          : "You’re in. Watch your inbox.";
-        form.reset();
-        if (fromUrl) refInput.value = fromUrl.toUpperCase();
+        // Hook for Laravel later: POST /api/waitlist { email, ref, code }
+        showSuccess(myCode);
         btn.disabled = false;
+      });
+
+      function copyText(text, button) {
+        var label = button.textContent;
+        function done() {
+          button.textContent = "Copied!";
+          setTimeout(function () { button.textContent = label; }, 1500);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(function () {
+            fallbackCopy(text, done);
+          });
+        } else {
+          fallbackCopy(text, done);
+        }
+      }
+
+      function fallbackCopy(text, done) {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+
+      document.getElementById("copyCodeBtn").addEventListener("click", function () {
+        var code = document.getElementById("crewCodeDisplay").textContent;
+        copyText(code, this);
+      });
+
+      document.getElementById("copyLinkBtn").addEventListener("click", function () {
+        var code = document.getElementById("crewCodeDisplay").textContent;
+        copyText(shareUrlFor(code), this);
       });
 
       /* —— Live BTC (USD) —— */
