@@ -492,6 +492,19 @@
         hudBtc.classList.add("stale");
       }
 
+      function fetchCoinbase() {
+        return fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot", {
+          cache: "no-store"
+        }).then(function (r) {
+          if (!r.ok) throw new Error("coinbase " + r.status);
+          return r.json();
+        }).then(function (d) {
+          var n = parseFloat(d && d.data && d.data.amount);
+          if (!isFinite(n) || n <= 0) throw new Error("bad price");
+          return n;
+        });
+      }
+
       function fetchBinance() {
         return fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT", {
           cache: "no-store"
@@ -520,9 +533,25 @@
         });
       }
 
+      function fetchKraken() {
+        return fetch("https://api.kraken.com/0/public/Ticker?pair=XBTUSD", {
+          cache: "no-store"
+        }).then(function (r) {
+          if (!r.ok) throw new Error("kraken " + r.status);
+          return r.json();
+        }).then(function (d) {
+          var tick = d && d.result && (d.result.XXBTZUSD || d.result.XBTUSD);
+          var n = tick && tick.c && parseFloat(tick.c[0]);
+          if (!isFinite(n) || n <= 0) throw new Error("bad price");
+          return n;
+        });
+      }
+
       function refreshBtc() {
-        fetchBinance()
+        fetchCoinbase()
+          .catch(function () { return fetchBinance(); })
           .catch(function () { return fetchCoinGecko(); })
+          .catch(function () { return fetchKraken(); })
           .then(applyPrice)
           .catch(markStale);
       }
