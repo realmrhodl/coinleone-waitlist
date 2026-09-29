@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d1520" />
-  <title>Coinleone — Crime Pays on the Streets</title>
-  <meta name="description" content="Coinleone — crime game. Run jobs, hit the tables, scratch to win. Play to earn." />
+  <title>Coinleone — Join the Family</title>
+  <meta name="description" content="Sign up for the Coinleone Family. Street crime that pays — run jobs, hit the tables, scratch to win. Play to earn." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -1001,7 +1001,7 @@
 
     <div class="card">
       <h1>Join the Family</h1>
-      <p class="pitch">Street crime that pays. Run jobs, grow the crew — <strong>play to earn</strong>, cash out when you’ve earned it.</p>
+      <p class="pitch">Street crime that pays. Sign up for the Family, run jobs, grow the crew — <strong>play to earn</strong>, cash out when you’ve earned it.</p>
 
       <div class="btc-teaser stale" id="btcTeaser" aria-live="polite">
         <span class="label">BTC</span>
@@ -1022,7 +1022,7 @@
         <div class="job-label">Job of the day</div>
         <div class="job-name" id="jobName">—</div>
         <div class="job-tease" id="jobTease"></div>
-        <button type="button" class="job-cta" id="jobJoinBtn">Sign up to pull it →</button>
+        <button type="button" class="job-cta" id="jobJoinBtn">Sign up for the Family →</button>
       </div>
 
       <div class="hints" aria-label="Coming soon">
@@ -1057,8 +1057,8 @@
       </form>
 
       <div class="success-panel" id="successPanel" aria-live="polite">
-        <div class="success-title">You’re in</div>
-        <p class="success-sub">Your LEONE code is ready. Pass it around — grow the family.</p>
+        <div class="success-title">You’re in the Family</div>
+        <p class="success-sub">Your LEONE code is ready. Pass it around — grow the Family.</p>
         <div class="code-block">
           <div class="code-label">Your LEONE code</div>
           <div class="crew-code" id="crewCodeDisplay">LEONE-XXXX</div>
@@ -1072,7 +1072,7 @@
         <p class="social-line">A quiet word travels further than a shout.</p>
       </div>
 
-      <p class="count"><span class="live-dot" aria-hidden="true"></span>Crew on the streets · <b id="waitCount">128</b></p>
+      <p class="count"><span class="live-dot" aria-hidden="true"></span><b id="waitCount">128</b> in the Family</p>
     </div>
   </main>
 
@@ -1355,7 +1355,7 @@
         var n = seededTodayBase() + localJoinsToday();
         var el = document.getElementById("joinedToday");
         if (!el) return;
-        el.innerHTML = "<b>" + n + "</b> hit the list today";
+        el.innerHTML = "<b>" + n + "</b> joined the Family today";
       }
 
       /* Soft tick: ephemeral ambient bump on top of seed + local joins */
@@ -1448,7 +1448,7 @@
         document.getElementById("crewCodeDisplay").textContent = code;
         var url = shareUrlFor(code);
         document.getElementById("shareText").textContent =
-          "Join the family on Coinleone — use code " + code;
+          "Join the Family on Coinleone — use code " + code;
         var linkEl = document.getElementById("shareLink");
         linkEl.href = url;
         linkEl.textContent = url;
