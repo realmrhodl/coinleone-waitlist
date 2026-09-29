@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d1520" />
-  <title>CoinLeone — Join the Family</title>
-  <meta name="description" content="CoinLeone — a browser crime game. Jobs, casino, scratch. Play to earn." />
+  <title>CoinLeone — Crime Pays on the Streets</title>
+  <meta name="description" content="CoinLeone — crime game. Run jobs, hit the tables, scratch to win. Play to earn." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -574,13 +574,31 @@
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 0 16px 18px;
+      padding: 8px 16px calc(16px + var(--safe-bottom));
       font-size: 0.72rem;
       color: var(--muted);
+      border-top: 1px solid rgba(58, 74, 94, 0.45);
+      margin-top: auto;
     }
+    footer .foot-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 6px 10px;
+    }
+    footer .sep { opacity: 0.45; }
     footer a { color: var(--gold); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
-    footer .legal { margin-top: 4px; opacity: 0.75; max-width: 420px; margin-left: auto; margin-right: auto; }
+    footer .legal {
+      margin-top: 6px;
+      opacity: 0.75;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 0.68rem;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
@@ -642,7 +660,7 @@
 
     <div class="card">
       <h1>Join the Family</h1>
-      <p class="pitch">Browser crime game. <strong>Play to earn</strong> — cash out when you’ve earned it.</p>
+      <p class="pitch">Street crime that pays. Run jobs, grow the crew — <strong>play to earn</strong>, cash out when you’ve earned it.</p>
 
       <div class="btc-teaser stale" id="btcTeaser" aria-live="polite">
         <span class="label">BTC</span>
@@ -656,7 +674,7 @@
         <div class="job-label">Job of the day</div>
         <div class="job-name" id="jobName">—</div>
         <div class="job-tease" id="jobTease"></div>
-        <button type="button" class="job-cta" id="jobJoinBtn">Join to run it →</button>
+        <button type="button" class="job-cta" id="jobJoinBtn">Sign up to pull it →</button>
       </div>
 
       <div class="hints" aria-label="Coming soon">
@@ -669,8 +687,8 @@
         <div class="ft-left">
           <span class="ft-icon" aria-hidden="true">💧</span>
           <div>
-            <div class="ft-title">Daily faucet <span class="ft-lock">🔒</span></div>
-            <div class="ft-sub">Next drip · locked tease</div>
+            <div class="ft-title">Daily drip <span class="ft-lock">🔒</span></div>
+            <div class="ft-sub">Midnight reset · locked till launch</div>
           </div>
         </div>
         <div class="ft-timer" id="faucetTimer">--:--:--</div>
@@ -682,8 +700,8 @@
           <input id="email" name="email" type="email" required placeholder="you@email.com" autocomplete="email" />
         </div>
         <div class="field">
-          <label for="ref">Crew code (optional)</label>
-          <input id="ref" name="ref" type="text" placeholder="REFERRAL" autocomplete="off" maxlength="24" />
+          <label for="ref">Crew code · optional</label>
+          <input id="ref" name="ref" type="text" placeholder="LEONE-XXXX" autocomplete="off" maxlength="24" />
         </div>
         <button type="submit" class="cta" id="submitBtn">Join the Family</button>
         <p class="joined-today" id="joinedToday" aria-live="polite"></p>
@@ -692,9 +710,9 @@
 
       <div class="success-panel" id="successPanel" aria-live="polite">
         <div class="success-title">You’re in</div>
-        <p class="success-sub">Your personal crew code is ready. Share it — grow the family.</p>
+        <p class="success-sub">Your LEONE code is ready. Pass it around — grow the family.</p>
         <div class="code-block">
-          <div class="code-label">Your crew code</div>
+          <div class="code-label">Your LEONE code</div>
           <div class="crew-code" id="crewCodeDisplay">LEONE-XXXX</div>
           <div class="btn-row">
             <button type="button" class="btn-sm primary" id="copyCodeBtn">Copy code</button>
@@ -703,16 +721,24 @@
         </div>
         <p class="share-text" id="shareText"></p>
         <a class="share-link" id="shareLink" href="#" target="_blank" rel="noopener"></a>
-        <p class="social-line">A quiet word to a friend goes further than a shout.</p>
+        <p class="social-line">A quiet word travels further than a shout.</p>
       </div>
 
-      <p class="count"><span class="live-dot" aria-hidden="true"></span>Family on the list · <b id="waitCount">128</b></p>
+      <p class="count"><span class="live-dot" aria-hidden="true"></span>Crew on the streets · <b id="waitCount">128</b></p>
     </div>
   </main>
 
   <footer>
-    <p><a href="https://coinleone.com">coinleone.com</a></p>
-    <p class="legal">Entertainment only. Soft cash is for play; crypto cash-out follows game rules.</p>
+    <div class="foot-row">
+      <span>© 2026 CoinLeone</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <a href="#privacy">Privacy</a>
+      <span class="sep" aria-hidden="true">·</span>
+      <a href="#terms">Terms</a>
+      <span class="sep" aria-hidden="true">·</span>
+      <a href="https://coinleone.com">coinleone.com</a>
+    </div>
+    <p class="legal">Entertainment only. No guaranteed returns.</p>
   </footer>
 
   <script>
@@ -840,7 +866,7 @@
         var n = seededTodayBase() + localJoinsToday();
         var el = document.getElementById("joinedToday");
         if (!el) return;
-        el.innerHTML = "<b>" + n + "</b> joined today";
+        el.innerHTML = "<b>" + n + "</b> hit the list today";
       }
 
       /* Soft tick: ephemeral ambient bump on top of seed + local joins */
@@ -933,7 +959,7 @@
         document.getElementById("crewCodeDisplay").textContent = code;
         var url = shareUrlFor(code);
         document.getElementById("shareText").textContent =
-          "Join my crew on CoinLeone — use code " + code;
+          "Join the family on CoinLeone — use code " + code;
         var linkEl = document.getElementById("shareLink");
         linkEl.href = url;
         linkEl.textContent = url;
