@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d1520" />
-  <title>CoinLeone — Crime Pays on the Streets</title>
-  <meta name="description" content="CoinLeone — crime game. Run jobs, hit the tables, scratch to win. Play to earn." />
+  <title>Coinleone — Crime Pays on the Streets</title>
+  <meta name="description" content="Coinleone — crime game. Run jobs, hit the tables, scratch to win. Play to earn." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -599,11 +599,95 @@
       font-size: 0.68rem;
       line-height: 1.4;
     }
+
+    /* City chips */
+    .city-bar {
+      display: flex;
+      gap: 6px;
+      margin: 0 0 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 2px 0 4px;
+      justify-content: flex-start;
+    }
+    .city-bar::-webkit-scrollbar { display: none; }
+    .city-chip {
+      flex: 0 0 auto;
+      font-family: "Oswald", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      background: #121c2a;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .city-chip:hover { border-color: var(--gold-dark); color: var(--gold-2); }
+    .city-chip.active {
+      color: #1a1408;
+      background: linear-gradient(180deg, var(--gold-2), var(--gold-dark));
+      border-color: #9a7a20;
+      box-shadow: 0 1px 0 #6e5614;
+    }
+
+    /* Crimes panel (guest: names + vibe only, no cash) */
+    .crimes-panel {
+      margin: 0 0 14px;
+      padding: 10px 12px 8px;
+      background: linear-gradient(135deg, #121c2a, #0a1018);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-align: left;
+    }
+    .crimes-panel .crimes-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold-dark);
+      margin-bottom: 8px;
+    }
+    .crimes-panel .crimes-label b {
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .crimes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .crimes-list li {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 6px 8px;
+      background: rgba(13, 21, 32, 0.65);
+      border: 1px solid rgba(58, 74, 94, 0.55);
+      border-radius: 3px;
+    }
+    .crimes-list .crime-name {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .crimes-list .crime-vibe {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
   <header class="hud">
-    <div class="hud-logo"><span class="mark">♠</span> CoinLeone</div>
+    <div class="hud-logo"><span class="mark">♠</span> Coinleone</div>
     <!-- Guests: no faux cash/energy. Live BTC only. -->
     <div class="hud-btc stale" id="hudBtc" title="Bitcoin (USD)" aria-live="polite">
       <span class="dot" aria-hidden="true"></span>BTC <b id="hudBtcPrice">—</b><span class="chg" id="hudBtcChg"></span>
@@ -670,6 +754,13 @@
         <span class="live" id="btcLive">·</span>
       </div>
 
+      <div class="city-bar" id="cityBar" role="tablist" aria-label="Cities"></div>
+
+      <div class="crimes-panel" id="crimesPanel" aria-label="Crimes in selected city">
+        <div class="crimes-label">Crimes · <b id="crimesCity">—</b></div>
+        <ul class="crimes-list" id="crimesList"></ul>
+      </div>
+
       <div class="job-day" id="jobDay" aria-label="Job of the day">
         <div class="job-label">Job of the day</div>
         <div class="job-name" id="jobName">—</div>
@@ -730,7 +821,7 @@
 
   <footer>
     <div class="foot-row">
-      <span>© 2026 CoinLeone</span>
+      <span>© 2026 Coinleone</span>
       <span class="sep" aria-hidden="true">·</span>
       <a href="#privacy">Privacy</a>
       <span class="sep" aria-hidden="true">·</span>
@@ -751,19 +842,108 @@
       var BTC_REFRESH_MS = 60000;
       var SOFT_TICK_MS = 28000;
 
-      var JOBS = [
-        { name: "Street Corner Shake", tease: "Lean on a local shop. Quick, quiet, no mess." },
-        { name: "Pickup Truck Boost", tease: "Hot-wire a beat-up hauler before dawn." },
-        { name: "Warehouse Peek", tease: "Scout the docks. See what’s moving tonight." },
-        { name: "ATM Skim", tease: "Slap a reader on a quiet machine. Walk away." },
-        { name: "Casino Chip Swap", tease: "Swap a marked stack under the pit boss’s nose." },
-        { name: "Harbor Drop", tease: "Meet the boat. Pass the crate. Don’t ask." },
-        { name: "Safehouse Sweep", tease: "Clear out last night’s leftovers before heat arrives." },
-        { name: "Courier Run", tease: "Cross town with a locked briefcase. No stops." },
-        { name: "Poker Table Mark", tease: "Spot the whale. Signal the crew. Cash later." },
-        { name: "Back-Alley Deal", tease: "Handshake in the rain. Goods change hands." },
-        { name: "Garage Chop", tease: "Strip a sedan for parts before sunrise." },
-        { name: "Nightclub Tab", tease: "Collect what’s owed. Smile. Leave a tip." }
+      var CITY_KEY = "coinleone_city_v1";
+
+      var CITIES = [
+        {
+          id: "la",
+          name: "Los Angeles",
+          short: "L.A.",
+          crimes: [
+            { name: "Studio Lot Sneak", vibe: "Slip past the night guard on the backlot." },
+            { name: "Freeway Boost", vibe: "Hot-wire a coupe before the on-ramp fills." },
+            { name: "Venice Shake", vibe: "Lean on a boardwalk shop after dark." },
+            { name: "Hills Courier", vibe: "Locked case. Mulholland. No stops." }
+          ]
+        },
+        {
+          id: "nyc",
+          name: "New York",
+          short: "NYC",
+          crimes: [
+            { name: "Subway Mark", vibe: "Spot the tourist. Lift clean. Exit next stop." },
+            { name: "Wall Street Drop", vibe: "Briefcase swap under the ticker glow." },
+            { name: "Brooklyn Chop", vibe: "Strip a sedan in a silent garage." },
+            { name: "Harbor Peek", vibe: "Scout the docks. See what’s moving." }
+          ]
+        },
+        {
+          id: "chi",
+          name: "Chicago",
+          short: "Chi",
+          crimes: [
+            { name: "Loop Lift", vibe: "Office tower after hours. Quiet shoes." },
+            { name: "River Run", vibe: "Meet under the bridges. Pass the crate." },
+            { name: "South Side Shake", vibe: "Collect what’s owed. Smile. Leave." },
+            { name: "Warehouse Sweep", vibe: "Clear leftovers before heat arrives." }
+          ]
+        },
+        {
+          id: "vegas",
+          name: "Las Vegas",
+          short: "Vegas",
+          crimes: [
+            { name: "Casino Chip Swap", vibe: "Marked stack under the pit boss’s nose." },
+            { name: "Strip Shadow", vibe: "Tail a whale from neon to alley." },
+            { name: "High Roller Mark", vibe: "Signal the crew. Cash later." },
+            { name: "Desert Drop", vibe: "Meet past the lights. Don’t ask." }
+          ]
+        },
+        {
+          id: "miami",
+          name: "Miami",
+          short: "Miami",
+          crimes: [
+            { name: "Marina Drop", vibe: "Boat at the pier. Crate changes hands." },
+            { name: "Nightclub Tab", vibe: "Collect what’s owed. Leave a tip." },
+            { name: "Beachfront Boost", vibe: "Convertible. Keys in. Gone." },
+            { name: "Art Deco Deal", vibe: "Handshake in the rain. Goods move." }
+          ]
+        },
+        {
+          id: "detroit",
+          name: "Detroit",
+          short: "Detroit",
+          crimes: [
+            { name: "Factory Sweep", vibe: "Empty plant. Parts still warm." },
+            { name: "Motor City Chop", vibe: "Strip a hauler before sunrise." },
+            { name: "Riverfront Deal", vibe: "Handshake by the water. No names." },
+            { name: "Corner Lean", vibe: "Quiet pressure on a late-night shop." }
+          ]
+        },
+        {
+          id: "ac",
+          name: "Atlantic City",
+          short: "A.C.",
+          crimes: [
+            { name: "Boardwalk Shake", vibe: "Lean on a pier stall after midnight." },
+            { name: "Boardwalk Mark", vibe: "Spot the tourist. Lift. Melt into neon." },
+            { name: "Pit Chip Swap", vibe: "Swap a stack while the dealer blinks." },
+            { name: "Pier Courier", vibe: "Locked bag. End of the boards. Go." }
+          ]
+        },
+        {
+          id: "nola",
+          name: "New Orleans",
+          short: "NOLA",
+          crimes: [
+            { name: "French Quarter Lift", vibe: "Crowded street. Fast hands. Jazz cover." },
+            { name: "Riverboat Peek", vibe: "Scout the boat. Note the vault route." },
+            { name: "Back-Alley Deal", vibe: "Handshake in the rain. Goods change." },
+            { name: "Cemetery Drop", vibe: "Gate after dark. Leave the package." }
+          ]
+        },
+        {
+          id: "boston",
+          name: "Boston",
+          short: "Boston",
+          crimes: [
+            { name: "Harbor Drop", vibe: "Meet the boat. Pass the crate. Don’t ask." },
+            { name: "Beacon Hill Lean", vibe: "Quiet pressure on a brownstone shop." },
+            { name: "T-Line Mark", vibe: "Rush hour. Soft lift. Exit next stop." },
+            { name: "Warehouse Peek", vibe: "Scout the docks. See what’s moving." }
+          ]
+        }
       ];
 
       function qs(name) {
@@ -788,9 +968,82 @@
         return h >>> 0;
       }
 
-      function jobOfTheDay() {
-        var idx = hashStr(dateKey() + "|coinleone-job") % JOBS.length;
-        return JOBS[idx];
+      function getCityById(id) {
+        for (var i = 0; i < CITIES.length; i++) {
+          if (CITIES[i].id === id) return CITIES[i];
+        }
+        return CITIES[0];
+      }
+
+      function loadCityId() {
+        try {
+          var saved = localStorage.getItem(CITY_KEY);
+          if (saved && getCityById(saved).id === saved) return saved;
+        } catch (e) {}
+        /* default: rotate lightly by day so return visits feel alive */
+        return CITIES[hashStr(dateKey() + "|default-city") % CITIES.length].id;
+      }
+
+      var selectedCityId = loadCityId();
+
+      function jobOfTheDay(city) {
+        city = city || getCityById(selectedCityId);
+        var list = city.crimes;
+        var idx = hashStr(dateKey() + "|coinleone-job|" + city.id) % list.length;
+        var c = list[idx];
+        return { name: c.name, tease: c.vibe };
+      }
+
+      function renderCityBar() {
+        var bar = document.getElementById("cityBar");
+        bar.innerHTML = "";
+        CITIES.forEach(function (city) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "city-chip" + (city.id === selectedCityId ? " active" : "");
+          btn.setAttribute("role", "tab");
+          btn.setAttribute("aria-selected", city.id === selectedCityId ? "true" : "false");
+          btn.dataset.city = city.id;
+          btn.textContent = city.short;
+          btn.title = city.name;
+          btn.addEventListener("click", function () {
+            selectCity(city.id);
+          });
+          bar.appendChild(btn);
+        });
+      }
+
+      function renderCrimes(city) {
+        document.getElementById("crimesCity").textContent = city.name;
+        var ul = document.getElementById("crimesList");
+        ul.innerHTML = "";
+        city.crimes.forEach(function (c) {
+          var li = document.createElement("li");
+          li.innerHTML =
+            '<span class="crime-name"></span><span class="crime-vibe"></span>';
+          li.querySelector(".crime-name").textContent = c.name;
+          li.querySelector(".crime-vibe").textContent = c.vibe;
+          ul.appendChild(li);
+        });
+      }
+
+      function renderJob(city) {
+        var job = jobOfTheDay(city);
+        document.getElementById("jobName").textContent = job.name;
+        document.getElementById("jobTease").textContent = job.tease;
+        var jobDayEl = document.getElementById("jobDay");
+        jobDayEl.classList.remove("pulse-once");
+        void jobDayEl.offsetWidth;
+        jobDayEl.classList.add("pulse-once");
+      }
+
+      function selectCity(id) {
+        selectedCityId = id;
+        try { localStorage.setItem(CITY_KEY, id); } catch (e) {}
+        var city = getCityById(id);
+        renderCityBar();
+        renderCrimes(city);
+        renderJob(city);
       }
 
       function crewCodeFromEmail(email) {
@@ -805,10 +1058,8 @@
         return "LEONE-" + code;
       }
 
-      /* —— Job of the day —— */
-      var job = jobOfTheDay();
-      document.getElementById("jobName").textContent = job.name;
-      document.getElementById("jobTease").textContent = job.tease;
+      /* —— Cities + crimes + job of the day —— */
+      selectCity(selectedCityId);
 
       var jobDayEl = document.getElementById("jobDay");
       var btcTeaserEl = document.getElementById("btcTeaser");
@@ -959,7 +1210,7 @@
         document.getElementById("crewCodeDisplay").textContent = code;
         var url = shareUrlFor(code);
         document.getElementById("shareText").textContent =
-          "Join the family on CoinLeone — use code " + code;
+          "Join the family on Coinleone — use code " + code;
         var linkEl = document.getElementById("shareLink");
         linkEl.href = url;
         linkEl.textContent = url;
