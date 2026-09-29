@@ -40,7 +40,7 @@
       flex-direction: column;
     }
 
-    /* Tiny HUD strip */
+    /* Tiny HUD strip — guests see logo only (no faux cash/energy) */
     .hud {
       display: flex;
       align-items: center;
@@ -76,7 +76,7 @@
       font-size: 0.75rem;
     }
 
-    .stat {
+    .hud-btc {
       font-size: 0.72rem;
       font-weight: 700;
       background: #121c2a;
@@ -84,10 +84,21 @@
       border-radius: 3px;
       padding: 3px 8px;
       color: var(--muted);
+      font-variant-numeric: tabular-nums;
     }
-    .stat b { font-weight: 700; }
-    .stat.cash b { color: var(--green); }
-    .stat.energy b { color: var(--blue); }
+    .hud-btc b { color: var(--gold-2); font-weight: 700; }
+    .hud-btc.stale b { color: var(--muted); }
+    .hud-btc .dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 5px;
+      vertical-align: middle;
+      box-shadow: 0 0 6px rgba(61, 186, 108, 0.7);
+    }
+    .hud-btc.stale .dot { background: var(--muted); box-shadow: none; }
 
     /* Hero */
     .hero {
@@ -139,30 +150,68 @@
     .pitch {
       color: var(--muted);
       font-size: 0.95rem;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .pitch strong { color: var(--gold-2); font-weight: 500; }
+
+    .btc-teaser {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 auto 18px;
+      padding: 8px 14px;
+      background: #0a1018;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .btc-teaser .label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .btc-teaser .price {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+    .btc-teaser.stale .price { color: var(--muted); }
+    .btc-teaser .live {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--green);
+    }
+    .btc-teaser.stale .live { color: var(--muted); }
 
     .hints {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 22px;
       flex-wrap: wrap;
     }
 
     .hint {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text);
+      letter-spacing: 0.05em;
+      color: var(--muted);
       background: #121c2a;
-      border: 1px solid var(--border);
+      border: 1px dashed var(--border);
       border-radius: 3px;
-      padding: 6px 12px;
+      padding: 5px 10px;
+      opacity: 0.85;
     }
-    .hint span { margin-right: 4px; }
+    .hint span { margin-right: 3px; }
+    .hint .lock { opacity: 0.7; font-size: 0.6rem; margin-left: 3px; }
 
     form { text-align: left; }
 
@@ -241,8 +290,10 @@
 <body>
   <header class="hud">
     <div class="hud-logo"><span class="mark">♠</span> CoinLeone</div>
-    <div class="stat cash">💵 <b>$12,450</b></div>
-    <div class="stat energy">⚡ <b>72/100</b></div>
+    <!-- Guests: no faux cash/energy. Live BTC only. -->
+    <div class="hud-btc stale" id="hudBtc" title="Bitcoin (USD)" aria-live="polite">
+      <span class="dot" aria-hidden="true"></span>BTC <b id="hudBtcPrice">—</b>
+    </div>
   </header>
 
   <main class="hero">
@@ -287,10 +338,16 @@
       <h1>Join the Family</h1>
       <p class="pitch">Browser crime game. <strong>Play to earn</strong> — cash out when you’ve earned it.</p>
 
-      <div class="hints" aria-label="Features">
-        <div class="hint"><span>🔫</span> Jobs</div>
-        <div class="hint"><span>🎰</span> Casino</div>
-        <div class="hint"><span>🃏</span> Scratch</div>
+      <div class="btc-teaser stale" id="btcTeaser" aria-live="polite">
+        <span class="label">BTC</span>
+        <span class="price" id="btcPrice">Loading…</span>
+        <span class="live" id="btcLive">·</span>
+      </div>
+
+      <div class="hints" aria-label="Coming soon">
+        <div class="hint" title="Coming soon"><span>💧</span> Faucet<span class="lock">🔒</span></div>
+        <div class="hint" title="Coming soon"><span>🎰</span> Casino<span class="lock">🔒</span></div>
+        <div class="hint" title="Coming soon"><span>🎟️</span> Lottery<span class="lock">🔒</span></div>
       </div>
 
       <form id="waitlistForm" novalidate>
@@ -319,6 +376,7 @@
     (function () {
       var STORAGE_KEY = "coinleone_waitlist_v1";
       var COUNT_KEY = "coinleone_waitlist_count";
+      var BTC_REFRESH_MS = 60000;
 
       function qs(name) {
         var m = new URLSearchParams(window.location.search).get(name);
@@ -391,6 +449,86 @@
         if (fromUrl) refInput.value = fromUrl.toUpperCase();
         btn.disabled = false;
       });
+
+      /* —— Live BTC (USD) —— */
+      var btcPriceEl = document.getElementById("btcPrice");
+      var btcLiveEl = document.getElementById("btcLive");
+      var btcTeaser = document.getElementById("btcTeaser");
+      var hudBtc = document.getElementById("hudBtc");
+      var hudBtcPrice = document.getElementById("hudBtcPrice");
+      var lastBtc = null;
+
+      function formatUsd(n) {
+        try {
+          return new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0
+          }).format(n);
+        } catch (e) {
+          return "$" + Math.round(n).toLocaleString("en-US");
+        }
+      }
+
+      function applyPrice(n) {
+        lastBtc = n;
+        var formatted = formatUsd(n);
+        btcPriceEl.textContent = formatted;
+        hudBtcPrice.textContent = formatted;
+        btcLiveEl.textContent = "Live";
+        btcTeaser.classList.remove("stale");
+        hudBtc.classList.remove("stale");
+      }
+
+      function markStale() {
+        if (lastBtc != null) {
+          btcLiveEl.textContent = "Cached";
+        } else {
+          btcPriceEl.textContent = "—";
+          hudBtcPrice.textContent = "—";
+          btcLiveEl.textContent = "Offline";
+        }
+        btcTeaser.classList.add("stale");
+        hudBtc.classList.add("stale");
+      }
+
+      function fetchBinance() {
+        return fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT", {
+          cache: "no-store"
+        }).then(function (r) {
+          if (!r.ok) throw new Error("binance " + r.status);
+          return r.json();
+        }).then(function (d) {
+          var n = parseFloat(d.price);
+          if (!isFinite(n) || n <= 0) throw new Error("bad price");
+          return n;
+        });
+      }
+
+      function fetchCoinGecko() {
+        return fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+          { cache: "no-store" }
+        ).then(function (r) {
+          if (!r.ok) throw new Error("coingecko " + r.status);
+          return r.json();
+        }).then(function (d) {
+          var n = d && d.bitcoin && d.bitcoin.usd;
+          n = parseFloat(n);
+          if (!isFinite(n) || n <= 0) throw new Error("bad price");
+          return n;
+        });
+      }
+
+      function refreshBtc() {
+        fetchBinance()
+          .catch(function () { return fetchCoinGecko(); })
+          .then(applyPrice)
+          .catch(markStale);
+      }
+
+      refreshBtc();
+      setInterval(refreshBtc, BTC_REFRESH_MS);
     })();
   </script>
 </body>
