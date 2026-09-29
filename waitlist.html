@@ -683,6 +683,69 @@
       font-size: 0.72rem;
       color: var(--muted);
     }
+
+    /* Legal modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5, 10, 18, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 14px;
+      backdrop-filter: blur(2px);
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: min(440px, 100%);
+      max-height: min(80dvh, 560px);
+      overflow: auto;
+      background: linear-gradient(180deg, #1a2638, #121c2a);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--gold-dark);
+      border-radius: 6px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+      padding: 18px 18px 16px;
+      position: relative;
+      text-align: left;
+    }
+    .modal h2 {
+      font-family: "Oswald", sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 0 28px 10px 0;
+    }
+    .modal p {
+      font-size: 0.82rem;
+      color: var(--text);
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+    .modal p.muted { color: var(--muted); font-size: 0.78rem; }
+    .modal a { color: var(--gold); }
+    .modal a:hover { text-decoration: underline; }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: #0a1018;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .modal-close:hover { color: var(--gold); border-color: var(--gold-dark); }
+    body.modal-open { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -823,14 +886,35 @@
     <div class="foot-row">
       <span>© 2026 Coinleone</span>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="#privacy">Privacy</a>
+      <a href="#privacy" id="privacyLink" data-modal="privacy">Privacy</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="#terms">Terms</a>
+      <a href="#terms" id="termsLink" data-modal="terms">Terms</a>
       <span class="sep" aria-hidden="true">·</span>
       <a href="https://coinleone.com">coinleone.com</a>
     </div>
     <p class="legal">Entertainment only. No guaranteed returns.</p>
   </footer>
+
+
+  <div class="modal-backdrop" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" hidden>
+    <div class="modal">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="privacyTitle">Privacy</h2>
+      <p>Coinleone is a waitlist preview. We store the email and optional invite code you submit so we can contact you about launch access. We do not sell your data.</p>
+      <p class="muted">This is placeholder policy text and will be replaced with a full privacy policy before launch.</p>
+      <p>Questions? <a href="mailto:omertalabs@protonmail.com">omertalabs@protonmail.com</a></p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="termsTitle" hidden>
+    <div class="modal">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="termsTitle">Terms</h2>
+      <p>Coinleone is entertainment only. Joining the waitlist does not create any right to tokens, cash, or other value. No guaranteed returns. You must be of legal age in your jurisdiction to play when the game launches.</p>
+      <p class="muted">This is placeholder terms text and will be replaced with full terms of service before launch.</p>
+      <p>Contact: <a href="mailto:omertalabs@protonmail.com">omertalabs@protonmail.com</a></p>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -1556,6 +1640,67 @@
       fetchSparkline();
       setInterval(refreshBtc, BTC_REFRESH_MS);
       setInterval(fetchSparkline, 5 * 60 * 1000);
+
+      /* Privacy / Terms modals */
+      (function setupLegalModals() {
+        var map = {
+          privacy: document.getElementById("privacyModal"),
+          terms: document.getElementById("termsModal")
+        };
+        var openEl = null;
+
+        function openModal(key) {
+          var el = map[key];
+          if (!el) return;
+          closeModal();
+          el.hidden = false;
+          el.classList.add("open");
+          document.body.classList.add("modal-open");
+          openEl = el;
+          var closeBtn = el.querySelector("[data-close]");
+          if (closeBtn) closeBtn.focus();
+        }
+
+        function closeModal() {
+          if (!openEl) return;
+          openEl.classList.remove("open");
+          openEl.hidden = true;
+          document.body.classList.remove("modal-open");
+          openEl = null;
+        }
+
+        document.querySelectorAll("[data-modal]").forEach(function (a) {
+          a.addEventListener("click", function (e) {
+            e.preventDefault();
+            openModal(a.getAttribute("data-modal"));
+          });
+        });
+
+        Object.keys(map).forEach(function (k) {
+          var el = map[k];
+          if (!el) return;
+          el.addEventListener("click", function (e) {
+            if (e.target === el) closeModal();
+          });
+          var btn = el.querySelector("[data-close]");
+          if (btn) btn.addEventListener("click", closeModal);
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && openEl) {
+            e.preventDefault();
+            closeModal();
+          }
+        });
+
+        /* Deep-link support for #privacy / #terms */
+        function fromHash() {
+          var h = (location.hash || "").replace(/^#/, "");
+          if (h === "privacy" || h === "terms") openModal(h);
+        }
+        window.addEventListener("hashchange", fromHash);
+        fromHash();
+      })();
     })();
   </script>
 </body>
