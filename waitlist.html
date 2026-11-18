@@ -3,30 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#FFD400" />
+  <meta name="theme-color" content="#000000" />
   <title>Coinleone — Join the Family</title>
   <meta name="description" content="Sign up for the Coinleone Family. Street crime that pays — run jobs, hit the tables, scratch to win. Play to earn." />
+  <link rel="icon" href="assets/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      /* Yellow screen palette */
-      --yellow: #FFD400;
-      --yellow-hi: #FFE45C;
-      --yellow-soft: #FFF3B0;
-      --paper: #FFFBE6;
-      --ink: #111111;
+      /* Navy C emblem palette */
+      --bg: #000000;
+      --bg-hi: #05080f;
+      --navy: #0b1424;
+      --navy-2: #101b2e;
+      --paper: #101b2e;
+      --ink: #f2f2f2;
       --ink-2: #000000;
-      --border: #111111;
-      --glow: rgba(17, 17, 17, 0.28);
-      --red: #A30016;
-      --green: #066325;
-      --blue: #0B3D91;
-      --text: #111111;
-      --muted: #3A3000;
-      --hud-up: #4ADE80;
-      --hud-down: #FF7A7A;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(255, 255, 255, 0.2);
+      --glow: rgba(255, 255, 255, 0.08);
+      --red: #f87171;
+      --green: #4ade80;
+      --blue: #8babd9;
+      --text: #f2f2f2;
+      --muted: #9aa4b5;
+      --hud-up: #4ade80;
+      --hud-down: #f87171;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-right: env(safe-area-inset-right, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -51,9 +56,9 @@
       overflow-x: clip;
       font-family: "Roboto", system-ui, sans-serif;
       background:
-        radial-gradient(ellipse 120% 60% at 50% -10%, rgba(255,255,255,0.28) 0%, transparent 55%),
-        radial-gradient(rgba(17,17,17,0.07) 1px, transparent 1.6px) 0 0 / 14px 14px,
-        var(--yellow);
+        radial-gradient(ellipse 90% 50% at 50% -8%, rgba(11, 20, 36, 0.95) 0%, transparent 62%),
+        var(--bg-hi);
+      background-color: var(--bg);
       color: var(--text);
       line-height: 1.45;
       -webkit-font-smoothing: antialiased;
@@ -70,21 +75,21 @@
       flex-wrap: wrap;
       gap: 8px 10px;
       padding: calc(8px + var(--safe-top)) 14px 8px;
-      background: var(--ink);
-      border-bottom: 3px solid var(--ink-2);
-      box-shadow: 0 4px 0 rgba(17,17,17,0.18);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: none;
       position: relative;
       z-index: 2;
       min-width: 0;
     }
 
     .hud-logo {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: clamp(0.92rem, 3.6vw, 1.05rem);
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--yellow);
+      color: var(--text);
       text-shadow: none;
       margin-right: auto;
       display: flex;
@@ -94,32 +99,32 @@
     }
 
     .hud-logo .mark {
-      width: 24px;
-      height: 24px;
-      border-radius: 3px;
-      background: linear-gradient(145deg, #e03a3f, #8b1c20);
-      border: 1px solid var(--yellow);
-      display: grid;
-      place-items: center;
-      font-size: 0.75rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid var(--border);
+      display: block;
+      object-fit: cover;
+      flex: 0 0 auto;
     }
 
     .hud-btc {
       font-size: clamp(0.65rem, 2.4vw, 0.72rem);
       font-weight: 700;
-      background: #000;
-      border: 1px solid rgba(255, 212, 0, 0.55);
+      background: var(--navy);
+      border: 1px solid var(--border);
       border-radius: 3px;
       padding: 4px 8px;
-      color: #E9DFA8;
+      color: var(--muted);
       font-variant-numeric: tabular-nums;
       max-width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .hud-btc b { color: var(--yellow); font-weight: 700; }
-    .hud-btc.stale b { color: #C9C2A0; }
+    .hud-btc b { color: var(--text); font-weight: 700; }
+    .hud-btc.stale b { color: var(--muted); }
     .hud-btc .dot {
       display: inline-block;
       width: 5px;
@@ -130,7 +135,7 @@
       vertical-align: middle;
       box-shadow: 0 0 6px rgba(74, 222, 128, 0.7);
     }
-    .hud-btc.stale .dot { background: #8a8470; box-shadow: none; }
+    .hud-btc.stale .dot { background: #5c6573; box-shadow: none; }
     .hud-btc .chg {
       margin-left: 4px;
       font-size: 0.65rem;
@@ -162,17 +167,17 @@
       pointer-events: none;
       z-index: 0;
       background-image:
-        radial-gradient(1px 1px at 8% 12%, rgba(17,17,17,0.55), transparent),
-        radial-gradient(1px 1px at 18% 28%, rgba(17,17,17,0.35), transparent),
-        radial-gradient(1.5px 1.5px at 32% 8%, rgba(17,17,17,0.5), transparent),
-        radial-gradient(1px 1px at 48% 18%, rgba(17,17,17,0.3), transparent),
-        radial-gradient(1px 1px at 62% 6%, rgba(17,17,17,0.45), transparent),
-        radial-gradient(1.5px 1.5px at 78% 22%, rgba(17,17,17,0.4), transparent),
-        radial-gradient(1px 1px at 88% 14%, rgba(17,17,17,0.35), transparent),
-        radial-gradient(1px 1px at 12% 42%, rgba(17,17,17,0.25), transparent),
-        radial-gradient(1px 1px at 55% 38%, rgba(17,17,17,0.3), transparent),
-        radial-gradient(1px 1px at 92% 40%, rgba(17,17,17,0.28), transparent);
-      opacity: 0.35;
+        radial-gradient(1px 1px at 8% 12%, rgba(242,242,242,0.45), transparent),
+        radial-gradient(1px 1px at 18% 28%, rgba(242,242,242,0.28), transparent),
+        radial-gradient(1.5px 1.5px at 32% 8%, rgba(242,242,242,0.4), transparent),
+        radial-gradient(1px 1px at 48% 18%, rgba(242,242,242,0.22), transparent),
+        radial-gradient(1px 1px at 62% 6%, rgba(242,242,242,0.35), transparent),
+        radial-gradient(1.5px 1.5px at 78% 22%, rgba(242,242,242,0.3), transparent),
+        radial-gradient(1px 1px at 88% 14%, rgba(242,242,242,0.25), transparent),
+        radial-gradient(1px 1px at 12% 42%, rgba(242,242,242,0.2), transparent),
+        radial-gradient(1px 1px at 55% 38%, rgba(242,242,242,0.22), transparent),
+        radial-gradient(1px 1px at 92% 40%, rgba(242,242,242,0.2), transparent);
+      opacity: 0.45;
     }
 
     .moon {
@@ -182,11 +187,11 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: var(--ink);
-      box-shadow: 0 0 0 4px rgba(17,17,17,0.12);
+      background: #c5cdd8;
+      box-shadow: 0 0 0 4px rgba(197, 205, 216, 0.08);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.85;
+      opacity: 0.22;
     }
 
     .skyline {
@@ -194,7 +199,7 @@
       left: 0; right: 0; bottom: 0;
       height: 110px;
       pointer-events: none;
-      opacity: 0.9;
+      opacity: 0.55;
       z-index: 0;
     }
 
@@ -206,21 +211,29 @@
       width: 100%;
       max-width: 420px;
       min-width: 0;
-      background: var(--yellow);
-      border: 3px solid var(--ink);
-      border-radius: 6px;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       padding: clamp(18px, 4.5vw, 28px) clamp(14px, 4vw, 22px) clamp(16px, 4vw, 22px);
-      box-shadow: 6px 6px 0 var(--ink), 0 14px 30px rgba(17,17,17,0.18);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-emblem {
+      display: block;
+      width: min(168px, 46vw);
+      height: auto;
+      margin: 0 auto 14px;
+      border-radius: 50%;
     }
 
     h1 {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: clamp(1.6rem, 5vw, 2rem);
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--ink);
-      text-shadow: 2px 2px 0 rgba(163, 0, 22, 0.55);
+      color: var(--text);
+      text-shadow: none;
       margin-bottom: 8px;
     }
 
@@ -238,8 +251,8 @@
       margin: 0 auto 16px;
       padding: 8px 12px;
       max-width: 100%;
-      background: var(--yellow-soft);
-      border: 2px solid var(--ink);
+      background: var(--navy-2);
+      border: 1px solid var(--border);
       border-radius: 4px;
       font-size: clamp(0.78rem, 3vw, 0.85rem);
       font-variant-numeric: tabular-nums;
@@ -255,8 +268,8 @@
       color: var(--muted);
     }
     .btc-teaser .price {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: clamp(1rem, 4.2vw, 1.15rem);
       color: var(--ink);
       letter-spacing: 0.02em;
@@ -299,9 +312,9 @@
     .job-day {
       margin: 0 0 16px;
       padding: 12px 14px;
-      background: var(--yellow-soft);
-      border: 2px solid var(--ink);
-      border-left: 6px solid var(--ink);
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-left: 3px solid rgba(255, 255, 255, 0.28);
       border-radius: 4px;
       text-align: left;
     }
@@ -314,8 +327,8 @@
       margin-bottom: 4px;
     }
     .job-day .job-name {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: 1.05rem;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -369,8 +382,8 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--muted);
-      background: var(--yellow-hi);
-      border: 2px dashed var(--ink);
+      background: var(--navy-2);
+      border: 1px dashed var(--border-strong);
       border-radius: 3px;
       padding: 5px 10px;
     }
@@ -381,8 +394,8 @@
     .faucet-tease {
       margin: 0 0 18px;
       padding: 10px 12px;
-      background: var(--yellow-soft);
-      border: 2px dashed var(--ink);
+      background: var(--navy-2);
+      border: 1px dashed var(--border-strong);
       border-radius: 4px;
       display: flex;
       align-items: center;
@@ -412,8 +425,8 @@
       margin-top: 1px;
     }
     .faucet-tease .ft-timer {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: 0.95rem;
       letter-spacing: 0.06em;
       color: var(--red);
@@ -448,16 +461,16 @@
       font: inherit;
       font-size: clamp(0.9rem, 3.5vw, 1rem); /* ≥16px-ish on mobile to avoid iOS zoom */
       color: var(--text);
-      background: var(--paper);
-      border: 2px solid var(--ink);
+      background: var(--navy-2);
+      border: 1px solid var(--border);
       border-radius: 4px;
       outline: none;
       -webkit-appearance: none;
       appearance: none;
     }
-    input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px var(--glow); }
+    input:focus { border-color: rgba(255, 255, 255, 0.35); box-shadow: 0 0 0 3px var(--glow); }
     input#ref { text-transform: uppercase; letter-spacing: 0.05em; }
-    input::placeholder { color: #6B5E1A; text-transform: none; letter-spacing: normal; }
+    input::placeholder { color: #6b7385; text-transform: none; letter-spacing: normal; }
 
     .cta {
       width: 100%;
@@ -465,25 +478,25 @@
       margin-top: 4px;
       min-height: var(--tap);
       padding: 14px 16px;
-      font-family: "Oswald", sans-serif;
+      font-family: "Alfa Slab One", serif;
       font-size: clamp(1.05rem, 4vw, 1.15rem);
-      font-weight: 700;
+      font-weight: 400;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--yellow);
-      background: var(--ink);
-      border: 2px solid var(--ink);
+      color: var(--navy);
+      background: var(--text);
+      border: 1px solid var(--text);
       border-radius: 4px;
       cursor: pointer;
-      box-shadow: 0 4px 0 var(--red), 0 8px 18px rgba(17,17,17,0.28);
+      box-shadow: none;
       position: sticky;
       bottom: calc(10px + var(--safe-bottom));
       z-index: 5;
       touch-action: manipulation;
     }
-    .cta:hover { background: #262626; }
-    .cta:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--red); }
-    .cta:focus-visible, .city-chip:focus-visible, .btn-sm:focus-visible, .modal-close:focus-visible, .job-cta:focus-visible, footer a:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+    .cta:hover { background: #ffffff; }
+    .cta:active { transform: translateY(1px); box-shadow: none; }
+    .cta:focus-visible, .city-chip:focus-visible, .btn-sm:focus-visible, .modal-close:focus-visible, .job-cta:focus-visible, footer a:focus-visible { outline: 2px solid rgba(242, 242, 242, 0.65); outline-offset: 2px; }
     .cta:disabled { opacity: 0.6; cursor: wait; }
 
     .joined-today {
@@ -514,7 +527,7 @@
       background: var(--green);
       margin-right: 5px;
       vertical-align: middle;
-      box-shadow: 0 0 0 2px rgba(6, 99, 37, 0.25);
+      box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.25);
       animation: blinkDot 2.4s ease-in-out infinite;
     }
     @keyframes blinkDot {
@@ -530,8 +543,8 @@
     }
     .success-panel.show { display: block; }
     .success-panel .success-title {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: 1.25rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -544,8 +557,8 @@
       margin-bottom: 16px;
     }
     .success-panel .code-block {
-      background: var(--yellow-soft);
-      border: 2px solid var(--ink);
+      background: var(--navy-2);
+      border: 1px solid var(--border);
       border-radius: 4px;
       padding: 14px 12px;
       margin-bottom: 12px;
@@ -559,12 +572,12 @@
       margin-bottom: 6px;
     }
     .success-panel .crew-code {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: 1.45rem;
       letter-spacing: 0.12em;
-      color: var(--ink);
-      text-shadow: 2px 2px 0 rgba(163, 0, 22, 0.35);
+      color: var(--text);
+      text-shadow: none;
       margin-bottom: 10px;
       user-select: all;
     }
@@ -575,25 +588,25 @@
       flex-wrap: wrap;
     }
     .success-panel .btn-sm {
-      font-family: "Oswald", sans-serif;
+      font-family: "Alfa Slab One", serif;
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 400;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       padding: 8px 14px;
       border-radius: 4px;
       cursor: pointer;
-      border: 2px solid var(--ink);
-      background: var(--yellow-hi);
-      color: var(--ink);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
     }
-    .success-panel .btn-sm:hover { background: var(--yellow-soft); }
+    .success-panel .btn-sm:hover { background: var(--navy-2); }
     .success-panel .btn-sm.primary {
-      background: var(--ink);
-      color: var(--yellow);
-      border-color: var(--ink);
+      background: var(--text);
+      color: var(--navy);
+      border-color: var(--text);
     }
-    .success-panel .btn-sm.primary:hover { background: #262626; }
+    .success-panel .btn-sm.primary:hover { background: #ffffff; }
     .success-panel .share-text {
       margin-top: 14px;
       font-size: 0.78rem;
@@ -624,7 +637,7 @@
       padding: 8px max(12px, var(--page-pad-x)) calc(16px + var(--safe-bottom));
       font-size: clamp(0.65rem, 2.6vw, 0.72rem);
       color: var(--muted);
-      border-top: 3px solid var(--ink);
+      border-top: 1px solid var(--border);
       margin-top: auto;
       width: 100%;
     }
@@ -668,18 +681,18 @@
     .city-bar::-webkit-scrollbar { display: none; }
     .city-chip {
       flex: 0 0 auto;
-      font-family: "Oswald", sans-serif;
+      font-family: "Alfa Slab One", serif;
       font-size: clamp(0.7rem, 2.8vw, 0.78rem);
-      font-weight: 700;
+      font-weight: 400;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       min-height: var(--tap);
       min-width: var(--tap);
       padding: 10px 14px;
       border-radius: 3px;
-      border: 2px solid var(--ink);
-      background: var(--yellow-hi);
-      color: var(--ink);
+      border: 1px solid var(--border);
+      background: var(--navy-2);
+      color: var(--text);
       cursor: pointer;
       white-space: nowrap;
       display: inline-flex;
@@ -689,20 +702,21 @@
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
-    .city-chip:hover { background: var(--yellow-soft); }
+    .city-chip:hover { background: #162038; }
+    .city-chip.active:hover { background: #ffffff; }
     .city-chip.active {
-      color: var(--yellow);
-      background: var(--ink);
-      border-color: var(--ink);
-      box-shadow: 0 3px 0 var(--red);
+      color: var(--navy);
+      background: var(--text);
+      border-color: var(--text);
+      box-shadow: none;
     }
 
     /* Crimes panel (guest: names + vibe only, no cash) */
     .crimes-panel {
       margin: 0 0 14px;
       padding: 10px 12px 8px;
-      background: var(--yellow-soft);
-      border: 2px solid var(--ink);
+      background: var(--navy-2);
+      border: 1px solid var(--border);
       border-radius: 4px;
       text-align: left;
       max-width: 100%;
@@ -732,13 +746,13 @@
       gap: 1px;
       padding: 6px 8px;
       background: var(--paper);
-      border: 1px solid rgba(17, 17, 17, 0.45);
+      border: 1px solid var(--border);
       border-radius: 3px;
       min-width: 0;
     }
     .crimes-list .crime-name {
-      font-family: "Oswald", sans-serif;
-      font-weight: 700;
+      font-family: "Alfa Slab One", serif;
+      font-weight: 400;
       font-size: clamp(0.78rem, 3.2vw, 0.88rem);
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -756,7 +770,7 @@
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: rgba(17, 17, 17, 0.72);
+      background: rgba(0, 0, 0, 0.72);
       display: none;
       align-items: center;
       justify-content: center;
@@ -776,10 +790,10 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
-      background: var(--yellow);
-      border: 3px solid var(--ink);
-      border-radius: 6px;
-      box-shadow: 6px 6px 0 #000, 0 16px 48px rgba(0,0,0,0.45);
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
       padding: 18px 18px 16px;
       position: relative;
       text-align: left;
@@ -789,9 +803,9 @@
       font-weight: 700;
     }
     .modal h2 {
-      font-family: "Oswald", sans-serif;
+      font-family: "Alfa Slab One", serif;
       font-size: clamp(1.05rem, 4vw, 1.15rem);
-      font-weight: 700;
+      font-weight: 400;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: var(--ink);
@@ -814,10 +828,10 @@
       margin: -4px -4px 0 8px;
       width: var(--tap);
       height: var(--tap);
-      border: 2px solid var(--ink);
+      border: 1px solid var(--border);
       border-radius: 3px;
-      background: var(--ink);
-      color: var(--yellow);
+      background: transparent;
+      color: var(--text);
       font-size: 1.25rem;
       line-height: 1;
       cursor: pointer;
@@ -843,8 +857,8 @@
       }
       .card {
         padding: 16px 12px 14px;
-        border-radius: 5px;
-        box-shadow: 4px 4px 0 var(--ink), 0 10px 22px rgba(17,17,17,0.16);
+        border-radius: 8px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
       }
       h1 {
         font-size: clamp(1.35rem, 7vw, 1.7rem);
@@ -950,7 +964,7 @@
 </head>
 <body>
   <header class="hud">
-    <div class="hud-logo"><span class="mark">♠</span> Coinleone</div>
+    <div class="hud-logo"><img class="mark" src="assets/logo-c.png" width="28" height="28" alt="" /> Coinleone</div>
     <!-- Guests: no faux cash/energy. Live BTC only. -->
     <div class="hud-btc stale" id="hudBtc" title="Bitcoin (USD)" aria-live="polite">
       <span class="dot" aria-hidden="true"></span>BTC <b id="hudBtcPrice">—</b><span class="chg" id="hudBtcChg"></span>
@@ -964,12 +978,12 @@
       <svg viewBox="0 0 960 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="bld" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1c1c1c"/>
-            <stop offset="100%" stop-color="#000000"/>
+            <stop offset="0%" stop-color="#0b1424"/>
+            <stop offset="100%" stop-color="#05080f"/>
           </linearGradient>
           <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FFD400" stop-opacity="0"/>
-            <stop offset="100%" stop-color="#A30016" stop-opacity="0.18"/>
+            <stop offset="0%" stop-color="#0b1424" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#101b2e" stop-opacity="0.35"/>
           </linearGradient>
         </defs>
         <rect x="0" y="0" width="960" height="110" fill="url(#glow)"/>
@@ -977,7 +991,7 @@
         <rect x="45" y="50" width="55" height="60" fill="url(#bld)"/>
         <rect x="105" y="65" width="35" height="45" fill="url(#bld)"/>
         <rect x="145" y="40" width="70" height="70" fill="url(#bld)"/>
-        <polygon points="145,40 180,25 215,40" fill="#111111"/>
+        <polygon points="145,40 180,25 215,40" fill="#0a1220"/>
         <rect x="220" y="60" width="50" height="50" fill="url(#bld)"/>
         <rect x="275" y="48" width="40" height="62" fill="url(#bld)"/>
         <rect x="320" y="35" width="80" height="75" fill="url(#bld)"/>
@@ -985,14 +999,14 @@
         <rect x="455" y="45" width="60" height="65" fill="url(#bld)"/>
         <rect x="520" y="62" width="38" height="48" fill="url(#bld)"/>
         <rect x="563" y="38" width="75" height="72" fill="url(#bld)"/>
-        <polygon points="563,38 600,20 638,38" fill="#111111"/>
+        <polygon points="563,38 600,20 638,38" fill="#0a1220"/>
         <rect x="643" y="58" width="50" height="52" fill="url(#bld)"/>
         <rect x="698" y="42" width="55" height="68" fill="url(#bld)"/>
         <rect x="758" y="65" width="42" height="45" fill="url(#bld)"/>
         <rect x="805" y="48" width="65" height="62" fill="url(#bld)"/>
         <rect x="875" y="60" width="50" height="50" fill="url(#bld)"/>
         <rect x="930" y="70" width="30" height="40" fill="url(#bld)"/>
-        <g fill="#FFD400" opacity="0.95">
+        <g fill="#c5cdd8" opacity="0.22">
           <rect x="55" y="60" width="4" height="4"/><rect x="65" y="72" width="4" height="4"/>
           <rect x="160" y="55" width="4" height="4"/><rect x="175" y="68" width="3" height="3"/>
           <rect x="340" y="50" width="4" height="4"/><rect x="360" y="62" width="3" height="3"/>
@@ -1001,11 +1015,12 @@
           <rect x="710" y="60" width="4" height="4"/><rect x="730" y="75" width="3" height="3"/>
           <rect x="840" y="65" width="4" height="4"/><rect x="855" y="78" width="3" height="3"/>
         </g>
-        <rect x="0" y="106" width="960" height="4" fill="#A30016" opacity="0.85"/>
+        <rect x="0" y="106" width="960" height="4" fill="#0b1424" opacity="0.9"/>
       </svg>
     </div>
 
     <div class="card">
+      <img class="hero-emblem" src="assets/logo-c.png" width="168" height="168" alt="Coinleone" />
       <h1>Join the Family</h1>
       <p class="pitch">Street crime that pays. Sign up for the Family, run jobs, grow the crew — <strong>play to earn</strong>, cash out when you’ve earned it.</p>
 
